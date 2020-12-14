@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Quagga from "quagga";
+import imei from 'node-imei';
 
 class Scanner extends Component {
   componentDidMount() {
@@ -50,7 +51,12 @@ class Scanner extends Component {
   }
 
   _onDetected = (result) => {
+    let IMEI = new imei();
     this.props.onDetected(result);
+    const res = result.codeResult.code.split('[')[0];
+    if(IMEI.isValid(res)){
+      Quagga.stop();
+    }
   };
 
   render() {
